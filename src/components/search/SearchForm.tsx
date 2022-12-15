@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback, useRef } from 'react';
+import React, { useContext, useEffect, useMemo, useRef } from 'react';
 import classes from './Search.module.scss';
 import { debounce } from 'lodash';
 import globalContext from '../../context/globalContext';
@@ -31,25 +31,32 @@ const Search = () => {
       });
   };
 
-  const debouncedFilter = useCallback(
-    debounce(() => {
-      if (inputRef.current.value === query) {
-        if (query?.length > 3) {
-          searchMovies(category, query, dispatch);
-        } else {
-          listMovies(category, dispatch);
+  const debouncedFilter = React.useMemo(
+    () =>
+      debounce(() => {
+        if (inputRef.current.value === query) {
+          if (query?.length > 3) {
+            searchMovies(category, query, dispatch);
+          } else {
+            listMovies(category, dispatch);
+          }
         }
-      }
-    }, 1000),
+      }, 1000),
 
-    [query, category, dispatch, inputRef]
+    [query, category, inputRef, dispatch]
+  );
+
+  const setListMovie = useMemo(
+    () => listMovies(category, dispatch),
+    [category]
   );
 
   useEffect(() => {
     if (query) {
       debouncedFilter();
-    } else listMovies(category, dispatch);
-  }, [debouncedFilter, category, dispatch, query]);
+    } else {
+    }
+  }, [debouncedFilter, setListMovie, dispatch, query]);
 
   return (
     <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
@@ -62,6 +69,7 @@ const Search = () => {
           defaultValue={query}
           ref={inputRef}
           onChange={handleChange}
+          autoComplete='off'
         />
       </div>
     </form>

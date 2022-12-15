@@ -1,7 +1,7 @@
 import { createContext } from 'react';
-import { ActionType, GlobalStateInterface } from './types';
+import { ActionType, GlobalStateInterface } from '../types';
 
-import { initialState } from './types';
+import { initialState } from '../types';
 
 const globalContext = createContext<{
   state: GlobalStateInterface;

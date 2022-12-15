@@ -8,7 +8,7 @@ import { API_URL, API_KEY } from '../config';
   dispatch: any;
 } */
 
-export const listMovies = async (category: any, dispatch: any) => {
+export const listMovies = async (category: string, dispatch: Function) => {
   const url = `${API_URL}/${category}/top_rated?api_key=${API_KEY}&language=en-US`;
 
   try {
@@ -38,14 +38,14 @@ export const listMovies = async (category: any, dispatch: any) => {
 export const getMovieDetails = async (
   category: string,
   id: any,
-  dispatch: any
+  dispatch: Function
 ) => {
-  const url = `${API_URL}/${category}/${id}?api_key=${API_KEY}&language=en-US`;
-
   dispatch({
     type: 'SET_LOADING',
     payload: true,
   });
+
+  const url = `${API_URL}/${category}/${id}?api_key=${API_KEY}&language=en-US`;
 
   try {
     const res = await axios.get(url);
@@ -53,8 +53,14 @@ export const getMovieDetails = async (
       type: 'MOVIE_DETAILS',
       payload: res.data,
     });
-  } catch (e) {
-    console.log(e);
+  } catch (error: any) {
+    dispatch({
+      type: 'SET_ERROR',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
 };
 
@@ -62,23 +68,30 @@ export const getMovieDetails = async (
 
 export const getMovieVideo = async (
   category: string,
-  id: any,
-  dispatch: any
+  id: undefined | string,
+  dispatch: Function
 ) => {
-  const url = `${API_URL}/${category}/${id}/videos?api_key=${API_KEY}&language=en-US`;
-
   try {
     dispatch({
       type: 'SET_LOADING',
+      payload: true,
     });
+    const url = `${API_URL}/${category}/${id}/videos?api_key=${API_KEY}&language=en-US`;
+
     const res = await axios.get(url);
 
     dispatch({
       type: 'GET_VIDEOS',
       payload: res.data.results[0],
     });
-  } catch (e) {
-    console.log(e);
+  } catch (error: any) {
+    dispatch({
+      type: 'SET_ERROR',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
 };
 
@@ -87,21 +100,27 @@ export const getMovieVideo = async (
 export const searchMovies = async (
   category: string,
   term: string,
-  dispatch: any
+  dispatch: Function
 ) => {
-  const url = `${API_URL}/search/${category}?api_key=${API_KEY}&language=en-US&query=${term}`;
-
   try {
     dispatch({
       type: 'SET_LOADING',
     });
+    const url = `${API_URL}/search/${category}?api_key=${API_KEY}&language=en-US&query=${term}`;
+
     const res = await axios.get(url);
 
     dispatch({
       type: 'SEARCH_MOVIES',
       payload: res.data.results,
     });
-  } catch (e) {
-    console.log(e);
+  } catch (error: any) {
+    dispatch({
+      type: 'SET_ERROR',
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
 };

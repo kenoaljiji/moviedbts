@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import globalContext from '../../../context/globalContext';
+import { GlobalStateInterface } from '../../../types';
 import Spinner from '../spinner/Spinner';
 import classes from './Video.module.scss';
 
@@ -21,7 +22,7 @@ const Video = () => {
           height='100%'
           frameBorder='0'
           allow='autoplay'
-          /* src={`https://www.youtube.com/embed/${videos.key}`} */
+          src={`https://www.youtube.com/embed/${videos.key}`}
         ></iframe>
       )}
     </div>

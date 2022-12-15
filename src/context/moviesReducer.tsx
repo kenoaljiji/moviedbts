@@ -1,4 +1,4 @@
-import { ActionType, GlobalStateInterface } from './types';
+import { ActionType, GlobalStateInterface } from '../types';
 
 const moviesReducer = (state: GlobalStateInterface, action: ActionType) => {
   switch (action.type) {

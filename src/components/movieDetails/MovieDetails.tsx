@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import globalContext from '../../context/globalContext';
 import classes from '../movieDetails/MovieDetails.module.scss';
 import { IMAGE_BASE_URL, NORMAL_SIZE, BACKDROP_SIZE } from '../../config';
@@ -13,17 +13,21 @@ const MovieDetails = () => {
 
   const { state, dispatch } = GlobalContext;
 
-  const { selectedMovie, category, loading, videos } = state;
-
   const navigate = useNavigate();
 
   const param = useParams();
   const { id } = param;
 
+  const { selectedMovie, category, loading, videos } = state;
+
   useEffect(() => {
     getMovieVideo(category, id, dispatch);
     getMovieDetails(category, id, dispatch);
-  }, [category, id]);
+  }, [category, id, dispatch]);
+
+  type Prop = {
+    name: string;
+  };
 
   const backgroundStyle: CSS.Properties = selectedMovie.backdrop_path
     ? {
@@ -36,7 +40,7 @@ const MovieDetails = () => {
       }
     : { backgroundColor: '#000' };
 
-  return loading || !selectedMovie ? (
+  return loading ? (
     <Spinner />
   ) : (
     <div style={backgroundStyle}>
@@ -83,7 +87,7 @@ const MovieDetails = () => {
             <div>
               <div>
                 <p style={{ marginTop: '3rem' }}>Genres</p>
-                {selectedMovie.genres?.map((genre: any, index: number) => (
+                {selectedMovie.genres?.map((genre: Prop, index: number) => (
                   <h4 className={classes.h4} key={index}>
                     {genre.name}{' '}
                   </h4>
@@ -93,17 +97,20 @@ const MovieDetails = () => {
             </div>
 
             <div className={classes['release-details']}>
-              {selectedMovie && selectedMovie.release_date && (
+              {selectedMovie?.release_date && (
                 <div className={classes['release-details_item']}>
                   <p>Released</p>
-                  <h3 className={classes.h4}>{selectedMovie.release_date}</h3>
+                  <h3 className={classes.h4}>
+                    {selectedMovie.release_date.toString()}
+                  </h3>
                 </div>
               )}
-
-              <div className={classes['release-details_item']}>
-                <p>Imbd</p>
-                <h3 className={classes.h4}>{selectedMovie.vote_average}</h3>
-              </div>
+              {selectedMovie.vote_average && (
+                <div className={classes['release-details_item']}>
+                  <p>Imbd</p>
+                  <h3 className={classes.h4}>{selectedMovie.vote_average}</h3>
+                </div>
+              )}
 
               <div className={classes['release-details_item']}>
                 <p>Runing time</p>
@@ -114,18 +121,16 @@ const MovieDetails = () => {
                   min
                 </h3>
               </div>
-
-              {selectedMovie.production_countries?.length > 0 && (
+              {selectedMovie.production_countries && (
                 <div className={classes['release-details_item']}>
                   <p>Country</p>
-                  {selectedMovie.production_countries?.map((country: any) => (
+                  {selectedMovie.production_countries?.map((country: Prop) => (
                     <h3 key={country.name} className={classes.h4}>
                       {country.name}
                     </h3>
                   ))}
                 </div>
               )}
-
               {selectedMovie.poster_path && (
                 <div className={classes['release-details_item']}>
                   <img

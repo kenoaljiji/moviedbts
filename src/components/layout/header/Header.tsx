@@ -20,7 +20,6 @@ const Header: React.FC = () => {
         payload: category,
       });
     },
-
     [dispatch]
   );
 
