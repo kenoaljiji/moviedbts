@@ -7,8 +7,11 @@
     font-weight: 300;
     text-align: center;
 
+    @include respond(tab-land) {
+        margin-top: 5rem;
+    }
     @include respond(phone) {
-        margin-top: 7rem;
+        margin-top: 8rem;
     }
 }
 .form-control {
