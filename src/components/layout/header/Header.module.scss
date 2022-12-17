@@ -2,53 +2,53 @@
 @import '../../../sass/mixins';
 
 .header {
-  width: auto;
-  height: 8rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    width: auto;
+    height: 8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  @include respond(phone) {
-    flex-direction: column;
-  }
+    @include respond(phone) {
+        flex-direction: column;
+    }
 }
 
 .logo {
-  width: 150px;
-  width: 150px;
-  @include respond(phone) {
-    order: 1;
-  }
+    width: 150px;
+    width: 150px;
+    @include respond(phone) {
+        order: 1;
+    }
 }
 
 .nav {
-  display: flex;
+    display: flex;
 
-  @include respond(phone) {
-    margin: 2rem 0;
-    order: 2;
-  }
+    @include respond(phone) {
+        margin: 2rem 0;
+        order: 2;
+    }
 
-  &-link {
-    background-color: transparent;
-    cursor: pointer;
-    color: #eee;
-    font-family: inherit;
-    margin-right: 10px;
-    font-size: 1.5rem;
-    border: 1px solid #eee;
-    padding: 0.7rem 2.3rem;
-    width: 140px;
-    border-radius: 20px;
-  }
-  &-link:hover {
-    border: 1px solid $color-secondary;
-    color: $color-secondary;
-  }
+    &-link {
+        background-color: transparent;
+        cursor: pointer;
+        color: #eee;
+        font-family: inherit;
+        margin-right: 10px;
+        font-size: 1.5rem;
+        border: 1px solid #eee;
+        padding: 0.7rem 2.3rem;
+        width: 140px;
+        border-radius: 20px;
+    }
+    &-link:hover {
+        border: 1px solid $color-secondary;
+        color: $color-secondary;
+    }
 
-  .active {
-    border: 1px solid $color-secondary;
-    color: $color-secondary;
-    font-weight: 400;
-  }
+    .active {
+        border: 1px solid $color-secondary;
+        color: $color-secondary;
+        font-weight: 400;
+    }
 }
